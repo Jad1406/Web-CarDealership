@@ -1,0 +1,25 @@
+CREATE TABLE CARINVENTORY(
+car_id BIGINT AUTO_INCREMENT,
+production_company VARCHAR(125) NOT NULL,
+car_model VARCHAR(125) NOT NULL,
+car_color VARCHAR(50) DEFAULT "Black",
+production_year YEAR,
+PRIMARY KEY(car_id)
+)
+
+CREATE TABLE CARTPARTS(
+car_part_id BIGINT AUTO_INCREMENT,
+car_part_title VARCHAR(255) NOT NULL,
+car_part_car_model VARCHAR(50) NOT NULL,
+car_year YEAR NOT NULL,
+car_part_price DECIMAL(7,2) NOT NULL,
+car_part_available_qty BIGINT NOT NULL DEFAULT 0,
+car_part_color VARCHAR(50),
+PRIMARY KEY(car_part_id)
+)
+
+CREATE TABLE REPAIROPTIONS(
+repair_option_id BIGINT AUTO_INCREMENT,
+repair_option_title VARCHAR(255),
+PRIMARY KEY(repair_option_id)
+)

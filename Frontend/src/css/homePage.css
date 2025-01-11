@@ -1,0 +1,24 @@
+body{
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+#heroSection{
+  background-image: url('../assets/HomePageAssets/homePageBackground-3.jpg');
+}
+
+#interiorPhoto{
+  background-image: url('../assets/HomePageAssets/luxuryInterior.jpg');
+}
+
+#technologyPhoto{
+  background-image: url('../assets/HomePageAssets/technology.jpeg');
+}
+
+#performancePhoto{
+  background-image: url('../assets/HomePageAssets/performance.jpeg');
+}
