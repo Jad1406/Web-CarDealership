@@ -13,15 +13,6 @@ router.get('/', (req, res) => {
   });
 });
 
-// Get a user by ID
-router.get('/:user_id', (req, res) => {
-  const { user_id } = req.params;
-  pool.query('SELECT * FROM USERS WHERE user_id = ?', [user_id], (err, results) => {
-    if (err) return res.status(500).json({ error: err.message });
-    res.json(results[0] || {});
-  });
-});
-
 // Create a new user
 router.post('/', async (req, res) => {
   //Data to be posted to database

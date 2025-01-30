@@ -7,8 +7,14 @@ const CarsForSaleOrRent = () => {
 
     const [carInventoryData, setCarInventoryData] = useState('')
     const [carRentalData, setCarRentalData] = useState('')
+    const [actionType,setActionType] = useState('')
+    const [formTitle,setFormTitle] = useState('')
+    const [userData, setUserData] = useState('')
     
+    //Fetching the data from the database
     useEffect(()=>{
+
+      //Fetching the cars that are for sale
       const fetchSaleData = async()=>{
         try {
           const response = await fetch("http://localhost:9000/api/market/sale/alphabet",{
@@ -23,7 +29,8 @@ const CarsForSaleOrRent = () => {
           console.log(error,"get method error");
         }
       }
-  
+      
+      //Fetching the cars that are for rent
       const fetchRentalsData = async()=>{
         try {
           const response = await fetch("http://localhost:9000/api/market/rent",{
@@ -38,9 +45,47 @@ const CarsForSaleOrRent = () => {
           console.log(error,"get method error");
         }
       }
+
+      //Fetching the user data
+      const fetchUserData = async()=>{
+        try {
+          console.log("fetch user data is running");
+          
+          const user_id = localStorage.getItem('user_id')
+
+          console.log("user_id is: "+user_id);
+          
+          
+          let result = await fetch(`http://localhost:9000/api/user/${user_id}`,{
+            method: 'GET',
+            headers: {
+              'Content-type' : 'application/json'
+            }
+          });
+          console.log("fetch completed");
+        
+          result = await result.json();
+          console.log("result is: "+JSON.stringify(result));
+          
+          setUserData(result)
+
+          //Checking whether the data has been read correctly or not
+          console.log("user Data is: "+JSON.stringify(userData));
+          
+        } catch (error) {
+          console.log(error,"Get method error");
+        }
+      }
+    
       fetchSaleData()
       fetchRentalsData()
+      fetchUserData()
     },[])
+    
+    //Function to open the appointment form
+    function openAppoitnmentForm() {
+      
+    }
 
   return (
     <div>
@@ -64,7 +109,7 @@ const CarsForSaleOrRent = () => {
                         {car.production_company} {car.car_model}
                       </p>
                       <button className="items-center my-auto">
-                        <img src='' alt="Add to Cart" className="w-[25px] h-[25px]" />
+                        <p className="text-m my-auto font-bold text-gray-800">Purchase</p>
                       </button>
                     </div>
                   </div>
@@ -73,6 +118,8 @@ const CarsForSaleOrRent = () => {
                   <p>Loading...</p>
               )}
               </div>
+
+              
 
           </div>
 
@@ -90,7 +137,7 @@ const CarsForSaleOrRent = () => {
                         {car.production_company} {car.car_model}
                       </p>
                       <button className="items-center my-auto">
-                        <img src='' alt="Add to Cart" className="w-[25px] h-[25px]" />
+                        <p className="text-m my-auto font-bold text-gray-800">Purchase</p>
                       </button>
                     </div>
                   </div>
@@ -102,7 +149,7 @@ const CarsForSaleOrRent = () => {
             </div>
 
         </div>
-
+        
       </div>
     </div>
   )

@@ -1,0 +1,75 @@
+CREATE TABLE CARINVENTORY(
+car_id BIGINT AUTO_INCREMENT,
+production_company VARCHAR(125) NOT NULL,
+car_model VARCHAR(125) NOT NULL,
+car_color VARCHAR(50) DEFAULT "Black",
+production_year YEAR,
+PRIMARY KEY(car_id)
+)
+
+CREATE TABLE CARTPARTS(
+car_part_id BIGINT AUTO_INCREMENT,
+car_part_title VARCHAR(255) NOT NULL,
+car_part_car_model VARCHAR(50) NOT NULL,
+car_year YEAR NOT NULL,
+car_part_price DECIMAL(7,2) NOT NULL,
+car_part_available_qty BIGINT NOT NULL DEFAULT 0,
+car_part_color VARCHAR(50),
+PRIMARY KEY(car_part_id)
+)
+
+CREATE TABLE REPAIROPTIONS(
+repair_option_id BIGINT AUTO_INCREMENT,
+repair_option_title VARCHAR(255),
+PRIMARY KEY(repair_option_id)
+)
+
+
+UPDATE CARINVENTORY
+SET image_url = '/assets/MarketAssets/audi-q8-2019.jpeg'
+WHERE car_model = 'Q7';
+
+CREATE TABLE FORMS (
+    form_id BIGINT AUTO_INCREMENT,
+    user_id BIGINT,
+    form_type VARCHAR(50) NOT NULL,
+    form_create_date DATE NOT NULL,
+    user_car_model VARCHAR(100) NOT NULL,
+    user_car_year YEAR NOT NULL,
+    form_description VARCHAR(255),
+    requested_employee_fn VARCHAR(50),
+    requested_employee_ln VARCHAR(50),
+    appointment_status VARCHAR(50),
+    PRIMARY KEY (form_id),
+    FOREIGN KEY (user_id) REFERENCES USERS(user_id)
+)
+
+CREATE TABLE EMPLOYEE(
+employee_id BIGINT AUTO_INCREMENT NOT NULL,
+employee_first_name VARCHAR(50) NOT NULL,
+employee_last_name VARCHAR(75) NOT NULL,
+employee_dob DATE NOT NULL,
+employee_nationality VARCHAR(75) NOT NULL,
+employee_city VARCHAR(75) NOT NULL,
+employee_street VARCHAR(50) NOT NULL,
+employee_bldg VARCHAR(100) NOT NULL,
+employee_personal_number BIGINT NOT NULL,
+employee_email VARCHAR(255) NOT NULL,
+PRIMARY KEY (employee_id)
+);
+
+CREATE TABLE APPOINTMENTS(
+appointment_id BIGINT AUTO_INCREMENT NOT NULL,
+appointment_type VARCHAR(50) NOT NULL,
+appointment_description VARCHAR(255),
+appointment_status VARCHAR(50) NOT NULL,
+appointment_due_date DATE NOT NULL,
+car_manufacturer VARCHAR(50) NOT NULL,
+car_model VARCHAR(50) NOT NULL,
+car_year YEAR NOT NULL,
+employee_id BIGINT NOT NULL,
+user_id BIGINT NOT NULL,
+PRIMARY KEY (appointment_id),
+FOREIGN KEY (employee_id) REFERENCES EMPLOYEE(employee_id),
+FOREIGN KEY (user_id) REFERENCES USERS(user_id)
+)
