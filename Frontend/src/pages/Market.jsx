@@ -4,6 +4,8 @@ import Header from '../components/Header'
 import Footer from '../components/Footer'
 import '../css/market.css'
 import carCart from '../assets/MarketAssets/carCart.svg'
+import RentalForm from '../components/RentalForm'
+
 
 const Market = () => {
 
@@ -11,6 +13,12 @@ const Market = () => {
   const [carRentalData, setCarRentalData] = useState('')
   const [carPartsData, setCarPartsData] = useState('')
   const [carRepairServicesData, setCarRepairServicesData] = useState('')
+  const [actionType,setActionType] = useState('')
+  const [formTitle,setFormTitle] = useState('')
+  const [appointmentRequested, setAppointmentRequested] = useState(false)
+  const [carProductionCompany, setCarProductionCompany] = useState('')
+  const [carModel, setCarModel] = useState('')
+  const [carYear, setCarYear] = useState('')
 
   //Fetch the data related to the cars ready for sale.
   useEffect(()=>{
@@ -80,8 +88,42 @@ const Market = () => {
     fetchRepairOptionsData()
   },[])
 
+  //Function to open the purchase appointment form
+  function openPurchaseAppoitnmentForm() {
+    setActionType('Purchase')
+    setFormTitle('Purchase')
+    setAppointmentRequested(true)
+  }
+
+  //Function to open the rental appointment form
+  function openRentalAppoitnmentForm() {
+    setActionType('Rent')
+    setFormTitle('Rental')
+    setAppointmentRequested(true)
+  }
+
+  const closeForm = () => {
+    setAppointmentRequested(false); // Close form when submitted or cancelled
+  };
+    
   return (
     <div id="container" className='w-full'>
+
+      {/* RentalForm modal */}
+      {/* {appointmentRequested && (
+        <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50 rounded-lg h-auto">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg mt-4 h-auto">
+            <RentalForm 
+              actionType={actionType} 
+              formTitle={formTitle} 
+              carProductionCompany={carProductionCompany}
+              carModel={carModel}
+              carYear={carYear}
+              closeForm={closeForm} // Pass the close function to RentalForm
+            />
+          </div>
+        </div>
+      )} */}
 
       <Header title="Marketplace"/>
 

@@ -2,6 +2,9 @@ import React from 'react'
 import Header from '../components/Header'
 import {useState, useEffect} from 'react'
 import SearchBar from '../components/SearchBar'
+import RentalForm from '../components/RentalForm'
+import BookmarkIcon from '@mui/icons-material/Bookmark';
+
 
 const CarsForSaleOrRent = () => {
 
@@ -10,6 +13,10 @@ const CarsForSaleOrRent = () => {
     const [actionType,setActionType] = useState('')
     const [formTitle,setFormTitle] = useState('')
     const [userData, setUserData] = useState('')
+    const [appointmentRequested, setAppointmentRequested] = useState(false)
+    const [carProductionCompany, setCarProductionCompany] = useState('')
+    const [carModel, setCarModel] = useState('')
+    const [carYear, setCarYear] = useState('')
     
     //Fetching the data from the database
     useEffect(()=>{
@@ -82,13 +89,42 @@ const CarsForSaleOrRent = () => {
       fetchUserData()
     },[])
     
-    //Function to open the appointment form
-    function openAppoitnmentForm() {
-      
+    //Function to open the purchase appointment form
+    function openPurchaseAppoitnmentForm() {
+      setActionType('Purchase')
+      setFormTitle('Purchase')
+      setAppointmentRequested(true)
     }
+
+    //Function to open the rental appointment form
+    function openRentalAppoitnmentForm() {
+      setActionType('Rent')
+      setFormTitle('Rental')
+      setAppointmentRequested(true)
+    }
+
+    const closeForm = () => {
+      setAppointmentRequested(false); // Close form when submitted or cancelled
+    };
 
   return (
     <div>
+
+      {/* RentalForm modal */}
+      {appointmentRequested && (
+        <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50 rounded-lg h-auto">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg mt-4 h-auto">
+            <RentalForm 
+              actionType={actionType} 
+              formTitle={formTitle} 
+              carProductionCompany={carProductionCompany}
+              carModel={carModel}
+              carYear={carYear}
+              closeForm={closeForm} // Pass the close function to RentalForm
+            />
+          </div>
+        </div>
+      )}
       <Header title={'Cars Gallery'}/>
       <div id="body" className='flex flex-col justify-center items-center w-full p-10 gap-10 bg-sky-900 text-gray-100 '>
         <SearchBar/>
@@ -101,15 +137,20 @@ const CarsForSaleOrRent = () => {
               <div id="sectionBody" className='grid grid-cols-5 gap-4 bg-gray-100 border-2 border-gray-200 rounded-xl shadow-lg p-4 hover:shadow-2xl transition-shadow duration-300'>
                 
               {carInventoryData && carInventoryData.length > 0 ? (
-                carInventoryData.map((car, index) => (
-                  <div key={index} className="h-[100%] flex flex-col justify-start border-2 border-gray-200 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+                carInventoryData.map((car) => (
+                  <div key={carInventoryData.car_id} className="h-[100%] flex flex-col justify-start border-2 border-gray-200 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
                     <img src={car.image_url} alt="Car" className="w-full h-[80%] rounded-t-lg object-cover"/>
                     <div id="textArea" className="w-full h-[20%] flex flex-row justify-between bg-gray-100 rounded-b-lg">
                       <p className="text-m my-auto font-bold text-gray-800">
                         {car.production_company} {car.car_model}
                       </p>
-                      <button className="items-center my-auto">
-                        <p className="text-m my-auto font-bold text-gray-800">Purchase</p>
+                      <button className="items-center my-auto" onClick={()=>{
+                        setCarProductionCompany(car.production_company);
+                        setCarModel(car.car_model);
+                        setCarYear(car.production_year);
+                        openPurchaseAppoitnmentForm();
+                        }}>
+                        <BookmarkIcon color='primary'/>
                       </button>
                     </div>
                   </div>
@@ -129,15 +170,20 @@ const CarsForSaleOrRent = () => {
             <div id="sectionBody" className='grid grid-cols-5 gap-4 bg-gray-100 border-2 border-gray-200 rounded-xl shadow-lg p-4 hover:shadow-2xl transition-shadow duration-300'>
 
               {carRentalData && carRentalData.length > 0 ? (
-                carRentalData.map((car, index) => (
-                  <div key={index} className="h-[100%] flex flex-col justify-start border-2 border-gray-200 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+                carRentalData.map((car) => (
+                  <div key={carRentalData.car_id} className="h-[100%] flex flex-col justify-start border-2 border-gray-200 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
                     <img src={car.image_url} alt="Car" className="w-full h-[80%] rounded-t-lg object-cover"/>
                     <div id="textArea" className="w-full h-[20%] flex flex-row justify-between bg-gray-100 rounded-b-lg">
                       <p className="text-m my-auto font-bold text-gray-800">
                         {car.production_company} {car.car_model}
                       </p>
-                      <button className="items-center my-auto">
-                        <p className="text-m my-auto font-bold text-gray-800">Purchase</p>
+                      <button className="items-center my-auto" onClick={()=>{
+                        setCarProductionCompany(car.production_company);
+                        setCarModel(car.car_model);
+                        setCarYear(car.production_year);
+                        openRentalAppoitnmentForm();
+                        }}>
+                        <BookmarkIcon color='primary'/>
                       </button>
                     </div>
                   </div>

@@ -12,4 +12,16 @@ router.get('/', async (req,res) =>{
     });
 });
 
+router.post('/', async (req, res) => {
+    const {appointment_type, appointment_description, appointment_status ,appointment_due_date, car_manufacturer, car_model, car_year, employee_id, user_id} = req.body;
+    pool.query(
+        'INSERT INTO APPOINTMENTS (appointment_type, appointment_description, appointment_status ,appointment_due_date, car_manufacturer, car_model, car_year, employee_id, user_id) VALUES (?,?,?,?,?,?,?,?,?)',
+        [appointment_type, appointment_description, appointment_status ,appointment_due_date, car_manufacturer, car_model, car_year, employee_id, user_id],
+        (err) => {
+            if (err) return res.status(500).json({ error: err.message });
+            res.json({ message: 'Appointment created' });
+        }
+    );
+});
+
 export default router;

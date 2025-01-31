@@ -13,7 +13,7 @@ const RentalForm = (props) => {
     const [formData, setFormData] = useState({
         appointment_type: "",
         appointment_description: "",
-        appointment_status: "incomplete",
+        appointment_status: "",
         appointment_due_date: "",
         car_manufacturer: "",
         car_model: "",
@@ -109,49 +109,6 @@ const RentalForm = (props) => {
 
     }, []);
 
-    //Post the data to the appointments table
-    useEffect(() => {
-        if (formData.appointment_due_date !== "") {
-            console.log("Form Data:", formData);
-        }
-    }, [formData]);
-    
-    //To make sure the correct data is sent, and not empty data (since in a handleSubmit function, refresh happened before updating the form data, so a wrong payload had been sent).
-    useEffect(() => {
-        const postAppointment = async () => {
-            try {
-                const response = await fetch("http://localhost:9000/api/appointments", {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(formData),
-                });
-                const result = await response.json();
-                console.log("Appointment created:", result);
-            } catch (error) {
-                console.log(error, "post method error");
-            }
-        };
-
-        if (formData.appointment_due_date !== "") {
-            postAppointment();
-            
-        }
-    }, [formData]);
-
-    function handleSubmit(e){
-        setFormData({
-            ...formData,
-            appointment_type: props.actionType,
-            appointment_description: props.actionType,
-            appointment_due_date: document.getElementById("appointmentDate").value,
-            car_manufacturer: document.getElementById("carType").value,
-            car_model: document.getElementById("userCarModel").value,
-            car_year: document.getElementById("selectCarModelYear").value,
-            employee_id: document.getElementById("selectAnEmployee").value,
-        });    
-    }
     return (
         <div className="container mx-auto flex flex-col items-center p-6 bg-gray-100 min-h-screen">
             {/* Form Title */}
@@ -182,19 +139,18 @@ const RentalForm = (props) => {
 
                 {/* Car Manufacturer & Model Year */}
                 <div className="flex gap-2">
-                    <input type="text" id="carType" value={props.carProductionCompany} className="w-2/3 p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+                    <input type="text" id="carType" placeholder="Enter your car manufacturer" className="w-2/3 p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none" />
                     <select id="selectCarModelYear" className="w-1/3 p-3 border rounded-lg bg-white">
-                        <option value={props.carYear}>{props.carYear}</option>
-                        {/* {Array.from({ length: 2025 - 1980 }, (_, index) => (
+                        {Array.from({ length: 2025 - 1980 }, (_, index) => (
                             <option key={index} value={1980 + index}>
                                 {1980 + index}
                             </option>
-                        ))} */}
+                        ))}
                     </select>
                 </div>
 
                 {/* User's Car Model */}
-                <input type="text" id="userCarModel" value={props.carModel} className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+                <input type="text" id="userCarModel" placeholder="Enter your car model here" className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none" />
 
                 {/* Employee Selection */}
                 <select id="selectAnEmployee" className="w-full p-2 border rounded-lg bg-white">
@@ -206,7 +162,7 @@ const RentalForm = (props) => {
                 </select>
 
                 {/* Submit Button */}
-                <button type="submit" className="w-full p-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition-all" onClick={(e)=>handleSubmit(e)}>
+                <button type="submit" className="w-full p-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition-all">
                     Submit
                 </button>
             </form>

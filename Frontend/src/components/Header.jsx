@@ -62,7 +62,7 @@ const Header = (props) => {
                 <li className="hover:text-sky-600 hover:underline cursor-pointer"><Link to='/' >Home</Link></li>
                 <li className="hover:text-sky-600 hover:underline cursor-pointer"><Link to='/#aboutUs'>About</Link></li>
                 <li className="hover:text-sky-600 hover:underline cursor-pointer"><Link to='/Market'>Market</Link></li>
-                <li className="hover:text-sky-600 hover:underline cursor-pointer"><Link to='/Cars_For_Sale_Or_Rent'>Rentals</Link></li>
+                <li className="hover:text-sky-600 hover:underline cursor-pointer"><Link to='/Cars_For_Sale_Or_Rent'>Gallery</Link></li>
                 <li className="hover:text-sky-600 hover:underline cursor-pointer"><Link to='/Parts'>Parts</Link></li>
                 <li className="hover:text-sky-600 hover:underline cursor-pointer"><Link to='/Repairs'>Repairs</Link></li>
               </ul>
