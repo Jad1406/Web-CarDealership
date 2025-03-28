@@ -1,5 +1,4 @@
 import React from "react";
-import { use } from "react";
 import { useState, useEffect } from "react";
 
 const RentalForm = (props) => {
@@ -109,14 +108,14 @@ const RentalForm = (props) => {
 
     }, []);
 
-    //Post the data to the appointments table
+    //To make sure the correct data is sent, and not empty data (since in a handleSubmit function, refresh happened before updating the form data, so a wrong payload had been sent).
     useEffect(() => {
         if (formData.appointment_due_date !== "") {
             console.log("Form Data:", formData);
         }
     }, [formData]);
     
-    //To make sure the correct data is sent, and not empty data (since in a handleSubmit function, refresh happened before updating the form data, so a wrong payload had been sent).
+    //Post the data to the appointments table
     useEffect(() => {
         const postAppointment = async () => {
             try {
@@ -140,7 +139,13 @@ const RentalForm = (props) => {
         }
     }, [formData]);
 
+    function handleClose(){
+        document.body.style.overflow = 'auto';
+        props.closeForm();
+    }
+
     function handleSubmit(e){
+        // e.preventDefault();
         setFormData({
             ...formData,
             appointment_type: props.actionType,
@@ -151,9 +156,14 @@ const RentalForm = (props) => {
             car_year: document.getElementById("selectCarModelYear").value,
             employee_id: document.getElementById("selectAnEmployee").value,
         });    
+        // props.closeForm();
     }
+
+    //To prevent background scrolling
+    document.body.style.overflow = 'hidden'; 
     return (
         <div className="container mx-auto flex flex-col items-center p-6 bg-gray-100 min-h-screen">
+            <button type="submit" onClick={(e)=>handleClose(e)}>X</button>
             {/* Form Title */}
             <div className="text-gray-900 text-2xl font-bold mb-4">
                {props.formTitle} Form for {username}
@@ -177,7 +187,7 @@ const RentalForm = (props) => {
                 {/* Appointment Type & Date */}
                 <div className="flex gap-2">
                     <input type="text" id="selectAppointmentType" value={props.actionType} readOnly className="w-1/2 p-3 border rounded-lg bg-gray-200 text-gray-700" />
-                    <input type="date" id="appointmentDate" className="w-1/2 p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+                    <input type="date" id="appointmentDate" className="w-1/2 p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none" required min={new Date().toISOString().split("T")[0]}/>
                 </div>
 
                 {/* Car Manufacturer & Model Year */}
@@ -185,11 +195,6 @@ const RentalForm = (props) => {
                     <input type="text" id="carType" value={props.carProductionCompany} className="w-2/3 p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none" />
                     <select id="selectCarModelYear" className="w-1/3 p-3 border rounded-lg bg-white">
                         <option value={props.carYear}>{props.carYear}</option>
-                        {/* {Array.from({ length: 2025 - 1980 }, (_, index) => (
-                            <option key={index} value={1980 + index}>
-                                {1980 + index}
-                            </option>
-                        ))} */}
                     </select>
                 </div>
 

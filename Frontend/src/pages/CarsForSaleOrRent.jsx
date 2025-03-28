@@ -8,8 +8,11 @@ import BookmarkIcon from '@mui/icons-material/Bookmark';
 
 const CarsForSaleOrRent = () => {
 
-    const [carInventoryData, setCarInventoryData] = useState('')
-    const [carRentalData, setCarRentalData] = useState('')
+  let user_id = localStorage.getItem('user_id')
+  
+  
+    const [carInventoryData, setCarInventoryData] = useState([])
+    const [carRentalData, setCarRentalData] = useState([])
     const [actionType,setActionType] = useState('')
     const [formTitle,setFormTitle] = useState('')
     const [userData, setUserData] = useState('')
@@ -17,6 +20,8 @@ const CarsForSaleOrRent = () => {
     const [carProductionCompany, setCarProductionCompany] = useState('')
     const [carModel, setCarModel] = useState('')
     const [carYear, setCarYear] = useState('')
+    const [searchTerm, setSearchTerm] = useState('');
+    
     
     //Fetching the data from the database
     useEffect(()=>{
@@ -91,30 +96,51 @@ const CarsForSaleOrRent = () => {
     
     //Function to open the purchase appointment form
     function openPurchaseAppoitnmentForm() {
-      setActionType('Purchase')
-      setFormTitle('Purchase')
-      setAppointmentRequested(true)
+      if (!user_id) {
+        window.location.href = "/Login_Page";
+        alert("Please login to continue");
+      }else{
+        setActionType('Purchase')
+        setFormTitle('Purchase')
+        setAppointmentRequested(true)
+      }
+      
     }
 
     //Function to open the rental appointment form
     function openRentalAppoitnmentForm() {
-      setActionType('Rent')
-      setFormTitle('Rental')
-      setAppointmentRequested(true)
+      if (!user_id) {
+        window.location.href = "/Login_Page";
+        alert("Please login to continue");
+      }else{
+        setActionType('Rent')
+        setFormTitle('Rental')
+        setAppointmentRequested(true)
+      }
+      
     }
 
     const closeForm = () => {
       setAppointmentRequested(false); // Close form when submitted or cancelled
     };
 
+    const filteredInventory = carInventoryData.filter((car) =>
+      `${car.production_company} ${car.car_model}`.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+    const filteredRentals = carRentalData.filter((car) =>
+        `${car.production_company} ${car.car_model}`.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    // let searchData = JSON.parse(carInventoryData);
   return (
     <div>
 
       {/* RentalForm modal */}
       {appointmentRequested && (
         <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50 rounded-lg h-auto">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg mt-4 h-auto">
+          <div className="p-6 rounded-lg shadow-lg w-full max-w-lg h-auto m-auto">
             <RentalForm 
+              setFormOpen={appointmentRequested}
               actionType={actionType} 
               formTitle={formTitle} 
               carProductionCompany={carProductionCompany}
@@ -127,7 +153,11 @@ const CarsForSaleOrRent = () => {
       )}
       <Header title={'Cars Gallery'}/>
       <div id="body" className='flex flex-col justify-center items-center w-full p-10 gap-10 bg-sky-900 text-gray-100 '>
-        <SearchBar/>
+        {console.log("Car inventory data is: "+JSON.stringify(carInventoryData))}
+        <SearchBar 
+          onSearch={setSearchTerm}
+          data={JSON.parse(JSON.stringify(carInventoryData))}
+        />
 
         <div id="carsForSale" className='text-start w-[90%] m-auto'>
 
@@ -135,10 +165,10 @@ const CarsForSaleOrRent = () => {
             <div id="sectionTitle" className='text-2xl font-extrabold'>Sale Market</div>
             
               <div id="sectionBody" className='grid grid-cols-5 gap-4 bg-gray-100 border-2 border-gray-200 rounded-xl shadow-lg p-4 hover:shadow-2xl transition-shadow duration-300'>
-                
-              {carInventoryData && carInventoryData.length > 0 ? (
-                carInventoryData.map((car) => (
-                  <div key={carInventoryData.car_id} className="h-[100%] flex flex-col justify-start border-2 border-gray-200 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+              
+              {filteredInventory && filteredInventory.length > 0 ? (
+                filteredInventory.map((car) => (
+                  <div key={filteredInventory.car_id} className="h-[100%] flex flex-col justify-start border-2 border-gray-200 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
                     <img src={car.image_url} alt="Car" className="w-full h-[80%] rounded-t-lg object-cover"/>
                     <div id="textArea" className="w-full h-[20%] flex flex-row justify-between bg-gray-100 rounded-b-lg">
                       <p className="text-m my-auto font-bold text-gray-800">
@@ -169,9 +199,9 @@ const CarsForSaleOrRent = () => {
 
             <div id="sectionBody" className='grid grid-cols-5 gap-4 bg-gray-100 border-2 border-gray-200 rounded-xl shadow-lg p-4 hover:shadow-2xl transition-shadow duration-300'>
 
-              {carRentalData && carRentalData.length > 0 ? (
-                carRentalData.map((car) => (
-                  <div key={carRentalData.car_id} className="h-[100%] flex flex-col justify-start border-2 border-gray-200 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+              {filteredRentals && filteredRentals.length > 0 ? (
+                filteredRentals.map((car) => (
+                  <div key={filteredRentals.car_id} className="h-[100%] flex flex-col justify-start border-2 border-gray-200 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
                     <img src={car.image_url} alt="Car" className="w-full h-[80%] rounded-t-lg object-cover"/>
                     <div id="textArea" className="w-full h-[20%] flex flex-row justify-between bg-gray-100 rounded-b-lg">
                       <p className="text-m my-auto font-bold text-gray-800">

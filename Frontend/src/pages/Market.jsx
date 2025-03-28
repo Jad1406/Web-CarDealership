@@ -110,7 +110,7 @@ const Market = () => {
     <div id="container" className='w-full'>
 
       {/* RentalForm modal */}
-      {/* {appointmentRequested && (
+      {appointmentRequested && (
         <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50 rounded-lg h-auto">
           <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg mt-4 h-auto">
             <RentalForm 
@@ -123,7 +123,7 @@ const Market = () => {
             />
           </div>
         </div>
-      )} */}
+      )}
 
       <Header title="Marketplace"/>
 
@@ -146,7 +146,12 @@ const Market = () => {
                     <p className="text-m my-auto font-bold text-gray-800">
                       {car.production_company} {car.car_model}
                     </p>
-                    <button className="items-center my-auto">
+                    <button className="items-center my-auto" onClick={()=>{
+                      setCarModel(car.car_model);
+                      setCarProductionCompany(car.production_company);
+                      setCarYear(car.production_year)
+                      openPurchaseAppoitnmentForm();
+                      }}>
                       <img src={carCart} alt="Add to Cart" className="w-[25px] h-[25px]" />
                     </button>
                   </div>
@@ -178,7 +183,12 @@ const Market = () => {
                       <p className="text-m my-auto font-bold text-gray-800">
                         {car.production_company} {car.car_model}
                       </p>
-                      <button className="items-center my-auto">
+                      <button className="items-center my-auto" onClick={()=>{
+                        setCarModel(car.car_model);
+                        setCarProductionCompany(car.production_company);
+                        setCarYear(car.production_year);
+                        openRentalAppoitnmentForm();
+                        }}>
                         <img src={carCart} alt="Add to Cart" className="w-[25px] h-[25px]" />
                       </button>
                     </div>

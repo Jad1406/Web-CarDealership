@@ -220,7 +220,6 @@ const HomePage = () => {
 
           </section>
         </div>
-
         <Footer />
       </div>
 

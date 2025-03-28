@@ -104,6 +104,15 @@ router.post('/login', async (req,res)=>{
   });
 });
 
+// Get a user by ID
+router.get('/:user_id', (req, res) => {
+  const { user_id } = req.params;
+  pool.query('SELECT * FROM USERS WHERE user_id = ?', [user_id], (err, results) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json(results[0]);
+  });
+});
+
 
 // Update a user
 router.put('/:user_id', (req, res) => {

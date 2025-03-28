@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 import '../css/signinPage.css'
 import { Link, useNavigate  } from 'react-router-dom'
 
-import PhoneInput from 'react-phone-input-2';
-import 'react-phone-input-2/lib/style.css';
+// import PhoneInput from 'react-phone-input-2';
+// import 'react-phone-input-2/lib/style.css';
 
 const SigninPage = () => {
 

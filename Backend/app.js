@@ -3,7 +3,6 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import logger from 'morgan';
-import db from './models/db.js';
 import userRoutes from './routes/userRoutes.js'
 import marketInfo from './routes/marketInfo.js'
 import employees from './routes/employees.js'
