@@ -2,6 +2,8 @@ import React from "react";
 import { useState, useEffect } from "react";
 
 const RentalForm = (props) => {
+
+    //Create the states
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
@@ -9,6 +11,8 @@ const RentalForm = (props) => {
     const [allUsers, setAllUsers] = useState([]);
     const user_id = localStorage.getItem('user_id');
     const [employees, setEmployees] = useState([]);
+
+    //This state is a JSON state that will hold the values of the form in order to store correct data into the database
     const [formData, setFormData] = useState({
         appointment_type: "",
         appointment_description: "",
@@ -20,6 +24,8 @@ const RentalForm = (props) => {
         employee_id: "",
         user_id: user_id,
     });
+
+    //Create the variables
     let appointment_id;
 
 

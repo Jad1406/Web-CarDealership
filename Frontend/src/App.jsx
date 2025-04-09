@@ -12,6 +12,8 @@ import RecoverAccount from './pages/RecoverAccount';
 import Repairs from './pages/Repairs';
 import UserList from './dbCalls/UserList';
 import RentalForm from './components/RentalForm';
+import AdminPannel from './pages/AdminPannel';
+import RequestedPart from './pages/RequestedPart';
 
 
 // const apiUrl = process.env.REACT_APP_API_URL;
@@ -33,8 +35,9 @@ function App(){
             <Route path="/Recover_Account" element={<RecoverAccount />} />
             <Route path="/Repairs" element={<Repairs />} />
             <Route path="/users" element={<UserList />} />
-
-            <Route path="/rentalForm" element={<RentalForm />}></Route>
+            <Route path="/Admin_Pannel" element={<AdminPannel />} />
+            <Route path="/Rental_Form" element={<RentalForm />}></Route>
+            <Route path="/Requested_Part" element={<RequestedPart />}></Route>
           </Routes>
         </BrowserRouter>
       </div>

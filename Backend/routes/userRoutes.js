@@ -77,6 +77,15 @@ router.post('/login', async (req,res)=>{
 
   const {username, user_password} = req.body;
 
+  if (username == process.env.ADMIN_USERNAME && user_password == process.env.ADMIN_PASSWORD) {
+    return res.status(200).json({
+      message: 'Logged in as admin',
+      user_id: -1,
+      username: 'admin'
+    });
+    
+  }
+
   //Create the query to be get
   const getUsernameEmailPasswordQuery = 'SELECT * FROM users WHERE username = ?';
   pool.query(getUsernameEmailPasswordQuery, [username], async(err,result) =>{

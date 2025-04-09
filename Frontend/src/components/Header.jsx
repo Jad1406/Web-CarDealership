@@ -5,6 +5,8 @@ import profileIcon from '../assets/HeaderAssets/profile-icon.png'
 
 const Header = (props) => {
 
+  const user_id = localStorage.getItem('user_id');
+
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState('');
   const navigate = useNavigate();
@@ -81,10 +83,32 @@ const Header = (props) => {
                   
                   {/* In case the user decides to logout, check they click their profile */}
                   {dropDown && (
-                    <div className="flex flex-col justify-start absolute right-0 mt-2 w-40 bg-white border border-gray-300 rounded-lg shadow-lg">
-                      <Link to="/profile" className="text-start px-4 py-2 text-gray-700 hover:bg-gray-100">View Profile</Link>
+                    <div>
+                      {
+                        (user_id != undefined) ? (
+                          <div className="flex flex-col justify-start absolute right-0 mt-2 w-40 bg-white border border-gray-300 rounded-lg shadow-lg">
+                            <Link to="/Customer_Profile" className="text-start px-4 py-2 text-gray-700 hover:bg-gray-100">View Profile</Link>
+                            <div className='w-[90%] h-[2px] mx-auto bg-sky-700'></div>
+                            <button onClick={handleLogout} className="block w-full text-left px-4 pb-2 pt-1 text-gray-700 hover:bg-gray-100">Log Out</button>
+                          </div>
+                        ) : (user_id === '-1') (
+                          <div className="flex flex-col justify-start absolute right-0 mt-2 w-40 bg-white border border-gray-300 rounded-lg shadow-lg">
+                            <Link to="/Admin_Pannel" className="text-start px-4 py-2 text-gray-700 hover:bg-gray-100">View Profile</Link>
+                            <div className='w-[90%] h-[2px] mx-auto bg-sky-700'></div>
+                            <button onClick={handleLogout} className="block w-full text-left px-4 pb-2 pt-1 text-gray-700 hover:bg-gray-100">Log Out</button>
+                          </div>
+                        )}
+                        {/* : (user_id == undefined) (
+                          <div className="flex flex-col justify-start absolute right-0 mt-2 w-40 bg-white border border-gray-300 rounded-lg shadow-lg">
+                            <Link to="/Employee_Profile" className="text-start px-4 py-2 text-gray-700 hover:bg-gray-100">View Profile</Link>
+                            <div className='w-[90%] h-[2px] mx-auto bg-sky-700'></div>
+                            <button onClick={handleLogout} className="block w-full text-left px-4 pb-2 pt-1 text-gray-700 hover:bg-gray-100">Log Out</button>
+                          </div>
+                        ) */}
+                      
+                      {/* <Link to="/profile" className="text-start px-4 py-2 text-gray-700 hover:bg-gray-100">View Profile</Link>
                       <div className='w-[90%] h-[2px] mx-auto bg-sky-700'></div>
-                      <button onClick={handleLogout} className="block w-full text-left px-4 pb-2 pt-1 text-gray-700 hover:bg-gray-100">Log Out</button>
+                      <button onClick={handleLogout} className="block w-full text-left px-4 pb-2 pt-1 text-gray-700 hover:bg-gray-100">Log Out</button> */}
                     </div>
                   )}
 

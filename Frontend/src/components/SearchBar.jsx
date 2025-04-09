@@ -16,29 +16,36 @@ const SearchBar = ({ onSearch }) => {
   // Function to handle search submission
   const handleSearch = (e) => {
     if (e.key === "Enter" && searchTerm.trim()) {
-      const updatedHistory = [searchTerm, ...history.filter((item) => item !== searchTerm)].slice(0, 5); // Limit to 5 items
+      //Limiting the search history to 5 items
+      const updatedHistory = [searchTerm, ...history.filter((item) => item !== searchTerm)].slice(0, 5);
+      //Update the history state
       setHistory(updatedHistory);
-      localStorage.setItem("searchHistory", JSON.stringify(updatedHistory));
       setSearchTerm(""); // Clear input after search
       setAnchorEl(null); // Close history dropdown
-      onSearch(searchTerm);
+      onSearch(searchTerm); //Update the search term in the parent component (The onSearch function has been passed)
     }
   };
 
+  //If the seach bar has been focused on (selected), drop the search history anchor
   const handleFocus = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
+  //If the user clicks away from the search bar, close the search history dropdown
   const handleBlur = () => {
     setAnchorEl(null);
   };
 
+  //Function to handle the selection of a history item
   const handleSelectHistory = (item) => {
-    setSearchTerm(item);
+    setSearchTerm(item); // Set the search term to the selected history item
     setAnchorEl(null);
   };
 
   return (
+
+    //Using the MUI library, we have created a text field with a search icon at the end
+    //This component handle the clickOn and clickAway events to show and hide the search history (Focus and Blur)
     <ClickAwayListener onClickAway={handleBlur}>
       <div style={{ position: "relative", width: "300px" }}>
         <TextField

@@ -6,9 +6,9 @@ const Footer = () => {
     <div id='Footer' className='w-full h-[180px] bg-sky-950'>
       <div id="container" className='flex flex-row justify-between items-center p-5'>
         <div id="phoneNumbers" className='flex flex-col mx-auto'>
-          <p>Whatsapp: +961 81 088 123</p>
-          <p>Beirut Tel: +961 01 088 123</p>
-          <p>Byblos Tel: +961 09 088 123</p>
+          <p>Whatsapp: +961 xx xxx xxx</p>
+          <p>Beirut Tel: +961 xx xxx xxx</p>
+          <p>Byblos Tel: +961 xx xxx xxx</p>
         </div>
 
         <div id="adress" className='flex flex-col mx-auto'>

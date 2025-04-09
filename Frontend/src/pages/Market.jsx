@@ -9,6 +9,8 @@ import RentalForm from '../components/RentalForm'
 
 const Market = () => {
 
+  let user_id = localStorage.getItem("user_id")
+
   const [carInventoryData, setCarInventoryData] = useState('')
   const [carRentalData, setCarRentalData] = useState('')
   const [carPartsData, setCarPartsData] = useState('')
@@ -90,16 +92,34 @@ const Market = () => {
 
   //Function to open the purchase appointment form
   function openPurchaseAppoitnmentForm() {
-    setActionType('Purchase')
-    setFormTitle('Purchase')
-    setAppointmentRequested(true)
+
+    if (!user_id) {
+        //Redirect to the login page if the user is not logged in
+        window.location.href = "/Login_Page";
+
+        //To be changed into a user friendly notification
+        alert("Please login to continue");
+      }else{
+        //Set the required states
+        setActionType('Purchase')
+        setFormTitle('Purchase')
+        setAppointmentRequested(true)
+      }
   }
 
   //Function to open the rental appointment form
   function openRentalAppoitnmentForm() {
-    setActionType('Rent')
-    setFormTitle('Rental')
-    setAppointmentRequested(true)
+    if (!user_id) {
+      window.location.href = "/Login_Page";
+
+      //To be cahnged into a user friendly notification
+      alert("Please login to continue");
+    }else{
+      setActionType('Rent')
+      setFormTitle('Rental')
+      setAppointmentRequested(true)
+    }
+    
   }
 
   const closeForm = () => {

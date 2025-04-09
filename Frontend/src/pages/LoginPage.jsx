@@ -47,6 +47,13 @@ const LoginPage = () => {
       localStorage.setItem('username', result.username);
       navigate('/');
     }
+
+    if (result.message == 'Logged in as admin') {
+      alert('logged in successfully');
+      localStorage.setItem('user_id', result.user_id);
+      localStorage.setItem('username', result.username);
+      navigate('/');
+    }
   }
   
   
