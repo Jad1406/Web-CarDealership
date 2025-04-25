@@ -1,36 +1,40 @@
-import React, { useEffect } from 'react'
-import { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { Add, Remove } from "@mui/icons-material";
 
-const CartItem = (props) => {
+const CartItem = ({ 
+  part,
+  incrementQuantity,
+  decrementQuantity
+}) => {
 
-    const [quantity, setQuantity] = useState(1);
-    const [price, setPrice] = useState(0);
-    const [totalPrice, setTotalPrice] = useState(0);
+  //Create the states required. For the each item in the cart, we need its name, price per unit, quantity requested.
+    const itemName = part.car_part_title;
+    // const itemID = part.car_part_id;
 
-    function incrementQuantity() {
-        setQuantity(quantity + 1);
-        setTotalPrice(price * (quantity + 1));
-    }
-    function decrementQuantity() {
-        if (quantity > 1) {
-            setQuantity(quantity - 1);
-            setTotalPrice(price * (quantity - 1));
-        }
-    }
-
-    useEffect(() => {
-        setPrice(props.price);
-        setTotalPrice(price * quantity);
-    }
-    , [quantity]);
   return (
 
-    <div className="bg-gray-800 shadow-md rounded-lg flex flex-col items-center p-4 hover:scale-105 transition-transform duration-200 ease-in-out">
-      <p>{props.partName}</p>
-      <div id="addMoreButtons">
-        <button onClick={incrementQuantity}>+</button>
-        <button onClick={decrementQuantity}>-</button>
+    <div className="bg-gray-800 shadow-md rounded-lg flex items-center justify-between p-4 hover:scale-105 transition-transform duration-200 ease-in-out w-full max-w-md mx-auto">
+      <p className="text-white font-medium">{itemName}</p>
+      
+      <div id="addMoreButtons" className="flex items-center gap-2">
+        <button
+          onClick={incrementQuantity}
+          className="bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-full"
+        >
+          <Add fontSize="small" />
+        </button>
+
+        <p className="text-white font-semibold">{part.quantity}</p>
+
+        <button
+          onClick={decrementQuantity}
+          className="bg-red-600 hover:bg-red-700 text-white p-2 rounded-full"
+        >
+          <Remove fontSize="small" />
+        </button>
       </div>
+
+      
     </div>
   )
 }

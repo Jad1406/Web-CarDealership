@@ -35,7 +35,7 @@ const SideBar = () => {
         <ul className="space-y-3 w-full">
           {[
             { name: "Home", path: "/" },
-            { name: "Cart", path: "/Cart" },
+            { name: "Checkout", path: "/Checkout" },
             { name: "Market", path: "/Market" },
             { name: "Profile", path: "/Customer_Profile" },
           ].map((item, index) => (

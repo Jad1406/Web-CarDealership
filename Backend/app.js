@@ -8,6 +8,7 @@ import marketInfo from './routes/marketInfo.js'
 import employees from './routes/employees.js'
 import appointments from './routes/appointments.js'
 import carParts from './routes/carPartsRoute.js'
+import orders from './routes/orderRoute.js'
 
 // Load environment variables
 dotenv.config();
@@ -36,5 +37,6 @@ app.use('/api/market', marketInfo);
 app.use('/api/employees', employees);
 app.use('/api/appointments', appointments);
 app.use('/api/carParts', carParts);
+app.use('/api/orders', orders);
 
 export default app;

@@ -14,6 +14,7 @@ import UserList from './dbCalls/UserList';
 import RentalForm from './components/RentalForm';
 import AdminPannel from './pages/AdminPannel';
 import RequestedPart from './pages/RequestedPart';
+import Checkout from './pages/CheckoutMenu';
 
 
 // const apiUrl = process.env.REACT_APP_API_URL;
@@ -38,6 +39,7 @@ function App(){
             <Route path="/Admin_Pannel" element={<AdminPannel />} />
             <Route path="/Rental_Form" element={<RentalForm />}></Route>
             <Route path="/Requested_Part" element={<RequestedPart />}></Route>
+            <Route path="/Checkout" element={<Checkout />}></Route>
           </Routes>
         </BrowserRouter>
       </div>

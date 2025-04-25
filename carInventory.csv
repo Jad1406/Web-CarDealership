@@ -1,0 +1,56 @@
+car_id,production_company,car_model,car_color,production_year,is_electric,price,image_url,rental,rating
+81,Toyota,Camry,Black,2021,0,30000.00,../assets/MarketAssets/toyota-camry-2021.jpeg,0,0
+82,Toyota,Corolla,Gray,2020,0,20000.00,https://example.com/images/toyota-corolla.jpg,0,0
+83,Toyota,RAV4,White,2019,0,25000.00,https://example.com/images/toyota-rav4.jpg,1,0
+84,Toyota,Highlander,Red,2022,0,35000.00,https://example.com/images/toyota-highlander.jpg,0,0
+85,Toyota,Tacoma,Blue,2021,0,33000.00,https://example.com/images/toyota-tacoma.jpg,1,0
+86,Mercedes,C-Class,Black,2023,0,43000.00,https://example.com/images/mercedes-c-class.jpg,1,0
+87,Mercedes,E-Class,Gray,2022,0,54000.00,https://example.com/images/mercedes-e-class.jpg,0,0
+88,Mercedes,GLA,"Light Gray",2021,0,36000.00,https://example.com/images/mercedes-gla.jpg,1,0
+89,Mercedes,GLE,Red,2020,0,57000.00,https://example.com/images/mercedes-gle.jpg,0,0
+90,Mercedes,S-Class,Blue,2019,0,92000.00,https://example.com/images/mercedes-s-class.jpg,1,0
+91,BMW,"3 Series",Black,2022,0,42000.00,https://example.com/images/bmw-3series.jpg,1,0
+92,BMW,"5 Series",Gray,2021,0,52000.00,https://example.com/images/bmw-5series.jpg,1,0
+93,BMW,X5,White,2020,0,61000.00,https://example.com/images/bmw-x5.jpg,1,0
+94,BMW,X3,Red,2023,0,47000.00,https://example.com/images/bmw-x3.jpg,1,0
+95,BMW,"7 Series",Blue,2019,0,86000.00,/assets/MarketAssets/bmw-7-2019.jpeg,0,0
+96,Audi,A4,Black,2020,0,39000.00,https://example.com/images/audi-a4.jpg,1,0
+97,Audi,A6,Gray,2021,0,50000.00,/assets/MarketAssets/audi-a6-2021.jpg,0,0
+98,Audi,Q7,White,2022,0,60000.00,/assets/MarketAssets/audi-q8-2019.jpeg,0,0
+99,Audi,Q5,"Light Gray",2019,0,45000.00,/assets/MarketAssets/audi-q5-2019.jpeg,0,0
+100,Audi,R8,Red,2023,0,160000.00,/assets/MarketAssets/audi-r8-2023.jpg,0,0
+101,Volkswagen,Golf,Blue,2021,0,23000.00,https://example.com/images/vw-golf.jpg,0,0
+102,Volkswagen,Jetta,Black,2020,0,22000.00,https://example.com/images/vw-jetta.jpg,0,0
+103,Volkswagen,Passat,Gray,2019,0,25000.00,https://example.com/images/vw-passat.jpg,0,0
+104,Volkswagen,Tiguan,White,2022,0,27000.00,https://example.com/images/vw-tiguan.jpg,1,0
+105,Volkswagen,Atlas,Red,2021,0,34000.00,https://example.com/images/vw-atlas.jpg,1,0
+106,Hyundai,Elantra,Blue,2023,0,20000.00,https://example.com/images/hyundai-elantra.jpg,0,0
+107,Hyundai,Sonata,Black,2022,0,24000.00,https://example.com/images/hyundai-sonata.jpg,1,0
+108,Hyundai,Tucson,Gray,2021,0,26000.00,https://example.com/images/hyundai-tucson.jpg,0,0
+109,Hyundai,"Santa Fe",White,2020,0,28000.00,https://example.com/images/hyundai-santafe.jpg,1,0
+110,Hyundai,Kona,"Light Gray",2019,0,21000.00,https://example.com/images/hyundai-kona.jpg,0,0
+111,Ford,F-150,Red,2022,0,45000.00,/assets/MarketAssets/ford-f150-2022.jpeg,0,0
+112,Ford,Mustang,Blue,2021,0,55000.00,/assets/MarketAssets/ford-mustang-2021.jpeg,0,0
+113,Ford,Explorer,Black,2020,0,40000.00,https://example.com/images/ford-explorer.jpg,1,0
+114,Ford,Escape,Gray,2019,0,30000.00,https://example.com/images/ford-escape.jpg,0,0
+115,Ford,Edge,White,2023,0,37000.00,https://example.com/images/ford-edge.jpg,0,0
+116,Honda,Civic,"Light Gray",2022,0,22000.00,https://example.com/images/honda-civic.jpg,0,0
+117,Honda,Accord,Red,2021,0,26000.00,https://example.com/images/honda-accord.jpg,0,0
+118,Honda,CR-V,Blue,2020,0,32000.00,https://example.com/images/honda-crv.jpg,0,0
+119,Honda,Pilot,Black,2019,0,35000.00,https://example.com/images/honda-pilot.jpg,0,0
+120,Honda,Odyssey,Gray,2023,0,37000.00,https://example.com/images/honda-odyssey.jpg,0,0
+121,Nissan,Altima,White,2022,0,25000.00,https://example.com/images/nissan-altima.jpg,0,0
+122,Nissan,Sentra,"Light Gray",2021,0,20000.00,https://example.com/images/nissan-sentra.jpg,1,0
+123,Nissan,Rogue,Red,2020,0,28000.00,https://example.com/images/nissan-rogue.jpg,1,0
+124,Nissan,Murano,Blue,2019,0,32000.00,https://example.com/images/nissan-murano.jpg,1,0
+125,Nissan,Pathfinder,Black,2023,0,34000.00,https://example.com/images/nissan-pathfinder.jpg,1,0
+126,Chevrolet,Silverado,Gray,2022,0,45000.00,https://example.com/images/chevrolet-silverado.jpg,1,0
+127,Chevrolet,Malibu,White,2021,0,24000.00,https://example.com/images/chevrolet-malibu.jpg,1,0
+128,Chevrolet,Equinox,"Light Gray",2020,0,28000.00,https://example.com/images/chevrolet-equinox.jpg,1,0
+129,Chevrolet,Traverse,Red,2019,0,35000.00,https://example.com/images/chevrolet-traverse.jpg,1,0
+130,Chevrolet,Tahoe,Blue,2023,0,50000.00,https://example.com/images/chevrolet-tahoe.jpg,1,0
+131,Tesla,"Model S",Black,2022,1,90000.00,https://example.com/images/tesla-models.jpg,1,0
+132,Tesla,"Model 3",Gray,2021,1,45000.00,https://example.com/images/tesla-model3.jpg,1,0
+133,Tesla,"Model X",White,2020,1,120000.00,https://example.com/images/tesla-modelx.jpg,1,0
+134,Tesla,"Model Y","Light Gray",2023,1,60000.00,https://example.com/images/tesla-modely.jpg,1,0
+135,Tesla,Cybertruck,Red,2022,1,70000.00,https://example.com/images/tesla-cybertruck.jpg,1,0

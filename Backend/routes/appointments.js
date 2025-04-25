@@ -12,6 +12,16 @@ router.get('/', async (req,res) =>{
     });
 });
 
+router.get('/user', async (req,res) =>{
+    const user_id = req.query.user_id;
+    if (!user_id) return res.status(400).json({ error: 'User ID is required' });
+    const selectQuery = 'SELECT * FROM APPOINTMENTS WHERE user_id = ?';
+    pool.query(selectQuery, [user_id], (err,results)=>{
+        if (err) return res.status(500).json({ error: err.message });
+        res.json(results);
+    });
+});
+
 router.post('/', async (req, res) => {
     const {appointment_type, appointment_description, appointment_status ,appointment_due_date, car_manufacturer, car_model, car_year, employee_id, user_id} = req.body;
     pool.query(

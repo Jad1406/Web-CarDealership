@@ -1,34 +1,73 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 import { IconButton } from '@mui/material';
 
 const CustomerProfile = () => {
   const [editMode, setEditMode] = useState(false);
-
   const [userInfo, setUserInfo] = useState({
-    name: "John Doe",
-    email: "john@example.com"
+    name: "",
+    email: "",
   });
+  const [appointments, setAppointments] = useState([]);
+  const [orders, setOrders] = useState([]);
 
-  const [appointments] = useState([
-    { date: "2025-04-02", service: "Oil Change" },
-    { date: "2025-04-10", service: "Tire Rotation" }
-  ]);
-
-  const [orders] = useState([
-    { partName: "Air Filter", date: "2025-03-25", status: "Shipped" },
-    { partName: "Brake Pads", date: "2025-03-28", status: "Processing" }
-  ]);
+  const user_id = localStorage.getItem("user_id");
 
   const handleInputChange = (e) => {
     setUserInfo({ ...userInfo, [e.target.name]: e.target.value });
   };
 
-  const saveChanges = () => {
-    setEditMode(false);
-    // Submit updated userInfo to backend if needed
+  const saveChanges = async () => {
+    try {
+      const response = await fetch(`http://localhost:9000/api/users/update`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ user_id, ...userInfo }),
+      });
+      if (!response.ok) throw new Error("Failed to update user info");
+      setEditMode(false);
+    } catch (error) {
+      console.error("Error saving changes:", error);
+    }
   };
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await fetch(`http://localhost:9000/api/users/user?user_id=${user_id}`);
+        const data = await response.json();
+        setUserInfo({ name: data.name, email: data.email });
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    const fetchAppointments = async () => {
+      try {
+        const response = await fetch(`http://localhost:9000/api/appointments/user?user_id=${user_id}`);
+        const data = await response.json();
+        setAppointments(data);
+      } catch (error) {
+        console.error("Error fetching appointments:", error);
+      }
+    };
+
+    const fetchOrders = async () => {
+      try {
+        const response = await fetch(`http://localhost:9000/api/orders/user?user_id=${user_id}`);
+        const data = await response.json();
+        setOrders(data);
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+      }
+    };
+
+    if (user_id) {
+      fetchUserData();
+      fetchAppointments();
+      fetchOrders();
+    }
+  }, [user_id]);
 
   return (
     <div className="min-h-screen bg-gray-100 text-black">
@@ -36,7 +75,6 @@ const CustomerProfile = () => {
       <div className="flex items-center justify-between p-4 bg-gray-800 text-white shadow">
         <h1 className="text-xl font-bold">My Profile</h1>
         <div className="flex space-x-4">
-          {/* <IconButton><NotificationsIcon sx={{ color: 'white' }} /></IconButton> */}
           <IconButton><AccountCircleIcon sx={{ color: 'white' }} /></IconButton>
         </div>
       </div>
@@ -91,8 +129,10 @@ const CustomerProfile = () => {
             <ul className="space-y-3">
               {appointments.map((appt, i) => (
                 <li key={i} className="p-3 border rounded bg-gray-100">
-                  <p><strong>Date:</strong> {appt.date}</p>
-                  <p><strong>Service:</strong> {appt.service}</p>
+                  <p><strong>Type:</strong> {appt.appointment_type}</p>
+                  <p><strong>Status:</strong> {appt.appointment_status}</p>
+                  <p><strong>Due:</strong> {appt.appointment_due_date}</p>
+                  <p><strong>Car:</strong> {`${appt.car_manufacturer} ${appt.car_model} (${appt.car_year})`}</p>
                 </li>
               ))}
             </ul>
@@ -101,16 +141,24 @@ const CustomerProfile = () => {
           )}
         </div>
 
-        {/* Ordered Parts */}
+        {/* Orders */}
         <div className="bg-white shadow rounded-lg p-6">
           <h2 className="text-xl font-semibold mb-4">Ordered Parts</h2>
           {orders.length > 0 ? (
             <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {orders.map((order, i) => (
                 <li key={i} className="border rounded p-4 bg-gray-100">
-                  <p><strong>Part:</strong> {order.partName}</p>
-                  <p><strong>Order Date:</strong> {order.date}</p>
-                  <p><strong>Status:</strong> {order.status}</p>
+                  <p><strong>Order Type:</strong> {order.order_type}</p>
+                  <p><strong>Order Date:</strong> {order.order_date}</p>
+                  {order.order_type === "delivery" && (
+                    <>
+                      <p><strong>Delivery Location:</strong> {order.delivery_location}</p>
+                      <p><strong>Expected Delivery:</strong> {order.expected_delivery_date}</p>
+                    </>
+                  )}
+                  <p><strong>Total Price:</strong> ${order.total_price}</p>
+                  <p><strong>Payment Type:</strong> {order.payment_type}</p>
+                  <p><strong>Items:</strong> {order.description}</p>
                 </li>
               ))}
             </ul>

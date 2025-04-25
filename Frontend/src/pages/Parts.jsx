@@ -9,6 +9,7 @@ const Parts = () => {
   const [carParts, setCarParts] = useState([]);
   const [selectedPart, setSelectedPart] = useState("");
   const [reqData, setReqData] = useState([]);
+  
 
   useEffect(()=>{
     const filteredData = carParts.filter((part) =>
@@ -36,7 +37,7 @@ const Parts = () => {
         <div id="gridLayout" className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {/* To be changed to data from the database */}
           {[
-            "Engine Parts",
+            "Engine",
             "Exterior",
             "Suspension",
             "Steering",

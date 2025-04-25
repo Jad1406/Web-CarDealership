@@ -13,6 +13,11 @@ const SearchBar = ({ onSearch }) => {
     setHistory(savedHistory);
   }, []);
 
+    // Update the parent component's search term dynamically
+  useEffect(() => {
+    onSearch(searchTerm); // Call the parent function whenever searchTerm changes
+  }, [searchTerm, onSearch]);
+
   // Function to handle search submission
   const handleSearch = (e) => {
     if (e.key === "Enter" && searchTerm.trim()) {
