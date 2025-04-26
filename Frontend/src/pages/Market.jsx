@@ -1,300 +1,265 @@
-import React, { useEffect, useState } from 'react'
-import {Link} from 'react-router-dom'
-import Header from '../components/Header'
-import Footer from '../components/Footer'
-import '../css/market.css'
-import carCart from '../assets/MarketAssets/carCart.svg'
-import RentalForm from '../components/RentalForm'
-
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
+import '../css/market.css';
+import carCart from '../assets/MarketAssets/carCart.svg';
+import RentalForm from '../components/RentalForm';
 
 const Market = () => {
+  let user_id = localStorage.getItem("user_id");
 
-  let user_id = localStorage.getItem("user_id")
+  const [carInventoryData, setCarInventoryData] = useState([]);
+  const [carRentalData, setCarRentalData] = useState([]);
+  const [carPartsData, setCarPartsData] = useState([]);
+  const [activeTab, setActiveTab] = useState('Buy');
+  const [actionType, setActionType] = useState('');
+  const [formTitle, setFormTitle] = useState('');
+  const [appointmentRequested, setAppointmentRequested] = useState(false);
+  const [carProductionCompany, setCarProductionCompany] = useState('');
+  const [carModel, setCarModel] = useState('');
+  const [carYear, setCarYear] = useState('');
+  const [selectedCarDetails, setSelectedCarDetails] = useState(null);
 
-  const [carInventoryData, setCarInventoryData] = useState('')
-  const [carRentalData, setCarRentalData] = useState('')
-  const [carPartsData, setCarPartsData] = useState('')
-  const [carRepairServicesData, setCarRepairServicesData] = useState('')
-  const [actionType,setActionType] = useState('')
-  const [formTitle,setFormTitle] = useState('')
-  const [appointmentRequested, setAppointmentRequested] = useState(false)
-  const [carProductionCompany, setCarProductionCompany] = useState('')
-  const [carModel, setCarModel] = useState('')
-  const [carYear, setCarYear] = useState('')
-
-  //Fetch the data related to the cars ready for sale.
-  useEffect(()=>{
-    const fetchSaleData = async()=>{
+  useEffect(() => {
+    const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:9000/api/market/sale",{
-          method: 'GET',
-        });
-        const result = await response.json();
-        setCarInventoryData(result)
-        
-        //Checking whether the data has been read correctly or not
-        console.log(JSON.stringify(carInventoryData));
+        const [saleRes, rentRes, partsRes] = await Promise.all([
+          fetch("http://localhost:9000/api/market/sale"),
+          fetch("http://localhost:9000/api/market/rent"),
+          fetch("http://localhost:9000/api/market/parts")
+        ]);
+        setCarInventoryData(await saleRes.json());
+        setCarRentalData(await rentRes.json());
+        setCarPartsData(await partsRes.json());
       } catch (error) {
-        console.log(error,"get method error");
+        console.log(error, "Fetch error");
       }
-    }
+    };
+    fetchData();
+  }, []);
 
-    const fetchRentalsData = async()=>{
-      try {
-        const response = await fetch("http://localhost:9000/api/market/rent",{
-          method: 'GET',
-        });
-        const result = await response.json();
-        setCarRentalData(result)
-        
-        //Checking whether the data has been read correctly or not
-        console.log(JSON.stringify(carRentalData));
-      } catch (error) {
-        console.log(error,"get method error");
-      }
-    }
-
-    const fetchPartsData = async()=>{
-      try {
-        const response = await fetch("http://localhost:9000/api/market/parts",{
-          method: 'GET',
-        });
-        const result = await response.json();
-        setCarPartsData(result)
-        
-        //Checking whether the data has been read correctly or not
-        console.log(JSON.stringify(carPartsData));
-      } catch (error) {
-        console.log(error,"get method error");
-      }
-    }
-
-    const fetchRepairOptionsData = async()=>{
-      try {
-        const response = await fetch("http://localhost:9000/api/market/repairs",{
-          method: 'GET',
-        });
-        const result = await response.json();
-        setCarRepairServicesData(result)
-        
-        //Checking whether the data has been read correctly or not
-        console.log(JSON.stringify(carRepairServicesData));
-      } catch (error) {
-        console.log(error,"get method error");
-      }
-    }
-
-    fetchSaleData()
-    fetchRentalsData()
-    fetchPartsData()
-    fetchRepairOptionsData()
-  },[])
-
-  //Function to open the purchase appointment form
-  function openPurchaseAppoitnmentForm() {
-
-    if (!user_id) {
-        //Redirect to the login page if the user is not logged in
-        window.location.href = "/Login_Page";
-
-        //To be changed into a user friendly notification
-        alert("Please login to continue");
-      }else{
-        //Set the required states
-        setActionType('Purchase')
-        setFormTitle('Purchase')
-        setAppointmentRequested(true)
-      }
-  }
-
-  //Function to open the rental appointment form
-  function openRentalAppoitnmentForm() {
-    if (!user_id) {
-      window.location.href = "/Login_Page";
-
-      //To be cahnged into a user friendly notification
-      alert("Please login to continue");
-    }else{
-      setActionType('Rent')
-      setFormTitle('Rental')
-      setAppointmentRequested(true)
-    }
-    
-  }
-
-  const closeForm = () => {
-    setAppointmentRequested(false); // Close form when submitted or cancelled
+  const openCarDetails = (item, type) => {
+    setSelectedCarDetails({ ...item, type });
   };
-    
-  return (
-    <div id="container" className='w-full'>
 
-      {/* RentalForm modal */}
+  const closeCarDetails = () => {
+    setSelectedCarDetails(null);
+  };
+
+  const closeForm = () => setAppointmentRequested(false);
+
+  const renderItems = (data, type) => (
+    <div className="relative flex gap-6 overflow-x-auto scrollbar-hide py-4">
+      <div className="flex animate-infinite-scroll gap-6 py-4">
+        {data.map((item, index) => (
+          <div
+            key={index}
+            className="relative min-w-[250px] h-[350px] bg-white dark:bg-gray-800 rounded-xl shadow-lg transform transition-transform duration-300"
+            onMouseEnter={(e) => {
+              e.currentTarget.closest('.animate-infinite-scroll').style.animationPlayState = 'paused';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.closest('.animate-infinite-scroll').style.animationPlayState = 'running';
+            }}
+          >
+            <img
+              src={item.image_url}
+              alt={type === 'Parts' ? item.car_part_title : `${item.production_company} ${item.car_model}`}
+              className="w-full h-2/3 object-cover rounded-t-xl"
+            />
+            <div className="absolute top-2 left-2 bg-white dark:bg-gray-700 bg-opacity-75 rounded-md px-2 py-1 text-xs font-bold shadow-md">
+              {type === 'Parts' ? item.car_part_title : `${item.production_company} ${item.car_model}`}
+            </div>
+            <div className="flex justify-center mt-2">
+              {(type === 'Buy' || type === 'Rent') && (
+                <button
+                  onClick={() => openCarDetails(item, type)}
+                  className="bg-sky-700 text-white font-bold py-2 px-4 rounded-full shadow-md hover:bg-sky-800 transition"
+                >
+                  Details
+                </button>
+              )}
+              {type === 'Parts' && (
+                <Link
+                  to="/Parts"
+                  className="bg-sky-700 text-white font-bold py-2 px-4 rounded-full shadow-md hover:bg-sky-800 transition"
+                >
+                  View
+                </Link>
+              )}
+            </div>
+          </div>
+        ))}
+        {data.map((item, index) => (
+          <div
+            key={`duplicate-${index}`}
+            className="relative min-w-[250px] h-[350px] bg-white dark:bg-gray-800 rounded-xl shadow-lg transform transition-transform duration-300"
+            onMouseEnter={(e) => {
+              e.currentTarget.closest('.animate-infinite-scroll').style.animationPlayState = 'paused';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.closest('.animate-infinite-scroll').style.animationPlayState = 'running';
+            }}
+          >
+            <img
+              src={item.image_url}
+              alt={type === 'Parts' ? item.car_part_title : `${item.production_company} ${item.car_model}`}
+              className="w-full h-2/3 object-cover rounded-t-xl"
+            />
+            <div className="absolute top-2 left-2 bg-white dark:bg-gray-700 bg-opacity-75 rounded-md px-2 py-1 text-xs font-bold shadow-md">
+              {type === 'Parts' ? item.car_part_title : `${item.production_company} ${item.car_model}`}
+            </div>
+            <div className="flex justify-center mt-2">
+              {(type === 'Buy' || type === 'Rent') && (
+                <button
+                  onClick={() => openCarDetails(item, type)}
+                  className="bg-sky-700 text-white font-bold py-2 px-4 rounded-full shadow-md hover:bg-sky-800 transition"
+                >
+                  Details
+                </button>
+              )}
+              {type === 'Parts' && (
+                <Link
+                  to="/Parts"
+                  className="bg-sky-700 text-white font-bold py-2 px-4 rounded-full shadow-md hover:bg-sky-800 transition"
+                >
+                  View
+                </Link>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="w-full bg-gray-100 dark:bg-gray-900 min-h-screen">
       {appointmentRequested && (
-        <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50 rounded-lg h-auto">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg mt-4 h-auto">
-            <RentalForm 
-              actionType={actionType} 
-              formTitle={formTitle} 
+        <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-lg">
+            <RentalForm
+              actionType={actionType}
+              formTitle={formTitle}
               carProductionCompany={carProductionCompany}
               carModel={carModel}
               carYear={carYear}
-              closeForm={closeForm} // Pass the close function to RentalForm
+              closeForm={closeForm}
             />
           </div>
         </div>
       )}
 
-      <Header title="Marketplace"/>
-
-      <div id="body" className='flex flex-col justify-center items-center w-full p-10 gap-10 bg-sky-900 text-gray-100 '>
-
-        {/* Main Body */}
-        {/* Top selling cars will be displayed here */}
-        <div id="carsForSale" className='text-start w-[90%] m-auto'>
-
-          
-          <div id="sectionTitle" className='text-2xl font-extrabold'>Sale Market</div>
-          
-            <div id="sectionBody" className='flex flex-row justify-start gap-4 w-[100%] h-[270px] bg-gray-100 border-2 border-gray-200 rounded-xl shadow-lg p-4 hover:shadow-2xl transition-shadow duration-300'>
-              
-            {carInventoryData && carInventoryData.length > 0 ? (
-              carInventoryData.slice(0, 4).map((car, index) => (
-                <div key={index} className="h-[100%] w-1/4 flex flex-col justify-start border-2 border-gray-200 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
-                  <img src={car.image_url} alt="Car" className="w-full h-[80%] rounded-t-lg object-cover"/>
-                  <div id="textArea" className="w-full h-[20%] flex flex-row justify-between bg-gray-100 rounded-b-lg">
-                    <p className="text-m my-auto font-bold text-gray-800">
-                      {car.production_company} {car.car_model}
-                    </p>
-                    <button className="items-center my-auto" onClick={()=>{
-                      setCarModel(car.car_model);
-                      setCarProductionCompany(car.production_company);
-                      setCarYear(car.production_year)
-                      openPurchaseAppoitnmentForm();
-                      }}>
-                      <img src={carCart} alt="Add to Cart" className="w-[25px] h-[25px]" />
-                    </button>
-                  </div>
-                </div>
-              ))
-              ): (
-                <p>Loading...</p>
+      {selectedCarDetails && (
+        <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center z-50">
+          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl w-full max-w-md">
+            <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-gray-100">
+              {selectedCarDetails.production_company} {selectedCarDetails.car_model} ({selectedCarDetails.production_year})
+            </h2>
+            <img
+              src={selectedCarDetails.image_url}
+              alt={`${selectedCarDetails.production_company} ${selectedCarDetails.car_model}`}
+              className="w-full rounded-md mb-4"
+            />
+            <p className="text-gray-700 dark:text-gray-300 mb-2">Color: {selectedCarDetails.car_color}</p>
+            {selectedCarDetails.type === 'Buy' && (
+              <p className="text-green-600 font-semibold mb-2">Price: ${selectedCarDetails.price}</p>
             )}
-
-              <button  className="h-full w-[50px] bg-gradient-to-b from-sky-700 to-sky-600 border-l-2 border-sky-200 rounded-tr-xl rounded-br-xl shadow-md hover:shadow-lg transition-shadow duration-300 flex items-center justify-center">
-                <Link to='/Cars_For_Sale_Or_Rent'><span className="rotate-90 text-white font-bold">More</span></Link>
+            {selectedCarDetails.type === 'Rent' && (
+              <p className="text-blue-600 font-semibold mb-2">Rental Available</p>
+            )}
+            <div className="flex justify-end gap-4">
+              <button
+                onClick={closeCarDetails}
+                className="bg-gray-300 dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-bold py-2 px-4 rounded-md hover:bg-gray-400 dark:hover:bg-gray-600 transition"
+              >
+                Close
               </button>
-
-            </div>
-
-        </div>
-
-        {/* Top rated rented cars will be displayed here */}
-        <div id="carsForRent" className='text-start w-[90%] m-auto'>
-          <div id="sectionTitle" className='text-2xl font-extrabold'>Rental Market</div>
-
-            <div id="sectionBody" className='flex flex-row justify-start gap-4 w-[100%] h-[270px] bg-gray-100 border-2 border-gray-200 rounded-xl shadow-lg p-4 hover:shadow-2xl transition-shadow duration-300'>
-
-              {carRentalData && carRentalData.length > 0 ? (
-                carRentalData.slice(0, 4).map((car, index) => (
-                  <div key={index} className="h-[100%] w-1/4 flex flex-col justify-start border-2 border-gray-200 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
-                    <img src={car.image_url} alt="Car" className="w-full h-[80%] rounded-t-lg object-cover"/>
-                    <div id="textArea" className="w-full h-[20%] flex flex-row justify-between bg-gray-100 rounded-b-lg">
-                      <p className="text-m my-auto font-bold text-gray-800">
-                        {car.production_company} {car.car_model}
-                      </p>
-                      <button className="items-center my-auto" onClick={()=>{
-                        setCarModel(car.car_model);
-                        setCarProductionCompany(car.production_company);
-                        setCarYear(car.production_year);
-                        openRentalAppoitnmentForm();
-                        }}>
-                        <img src={carCart} alt="Add to Cart" className="w-[25px] h-[25px]" />
-                      </button>
-                    </div>
-                  </div>
-                ))
-                ): (
-                  <p>Loading...</p>
-              )}
-
-              <button  className="h-full w-[50px] bg-gradient-to-b from-sky-700 to-sky-600 border-l-2 border-sky-200 rounded-tr-xl rounded-br-xl shadow-md hover:shadow-lg transition-shadow duration-300 flex items-center justify-center">
-                <Link to='/Cars_For_Sale_Or_Rent#Rentals'><span className="rotate-90 text-white font-bold">More</span></Link>
-              </button>
-
-            </div>
-
-        </div>
-
-        {/* Top requested car parts will be displayed here */}
-        <div id="carParts" className='text-start w-[90%] m-auto'>
-          <div id="sectionTitle" className='text-2xl font-extrabold'>Parts Market</div>
-
-            <div id="sectionBody" className='flex flex-row justify-start gap-4 w-[100%] h-[270px] bg-gray-100 border-2 border-gray-200 rounded-xl shadow-lg p-4 hover:shadow-2xl transition-shadow duration-300'>
-
-              {carPartsData && carPartsData.length > 0 ? (
-                carPartsData.slice(0, 4).map((part, index) => (
-                  <div key={index} className="h-[100%] w-1/4 flex flex-col justify-start border-2 border-gray-200 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
-                    <img src={part.image_url} alt="part" className="w-full h-[80%] rounded-t-lg object-cover"/>
-                    <div id="textArea" className="w-full h-[20%] flex flex-row justify-between bg-gray-100 rounded-b-lg">
-                      <p className="text-m my-auto font-bold text-gray-800">
-                        {part.car_part_title}
-                      </p>
-                      <button className="items-center my-auto">
-                        <img src={carCart} alt="Add to Cart" className="w-[25px] h-[25px]" />
-                      </button>
-                    </div>
-                  </div>
-                ))
-                ): (
-                  <p>Loading...</p>
-              )}
-
-                <button  className="h-full w-[50px] bg-gradient-to-b from-sky-700 to-sky-600 border-l-2 border-sky-200 rounded-tr-xl rounded-br-xl shadow-md hover:shadow-lg transition-shadow duration-300 flex items-center justify-center">
-                  <Link to='/Parts'><span className="rotate-90 text-white font-bold">More</span></Link>
+              {(selectedCarDetails.type === 'Buy' || selectedCarDetails.type === 'Rent') && (
+                <button
+                  onClick={() => {
+                    closeCarDetails();
+                    if (!user_id) {
+                      alert("Please login to continue");
+                      window.location.href = "/Login_Page";
+                    } else {
+                      setActionType(selectedCarDetails.type);
+                      setFormTitle(selectedCarDetails.type === 'Buy' ? 'Purchase' : 'Rental');
+                      setCarProductionCompany(selectedCarDetails.production_company);
+                      setCarModel(selectedCarDetails.car_model);
+                      setCarYear(selectedCarDetails.production_year);
+                      setAppointmentRequested(true);
+                    }
+                  }}
+                  className="bg-sky-700 text-white font-bold py-2 px-4 rounded-md hover:bg-sky-800 transition"
+                >
+                  {selectedCarDetails.type === 'Buy' ? 'Book Purchase' : 'Book Rental'}
                 </button>
-
+              )}
             </div>
+          </div>
         </div>
+      )}
 
-        {/* Top requested repair options will be displayed here */}
-        <div id="repairOptions" className='text-start w-[90%] m-auto'>
+      <Header title="Marketplace" />
 
-          <div id="sectionTitle" className='text-2xl font-extrabold'>Repair Options</div>
+      {/* Navigation Tabs */}
+      <div className="flex justify-center mt-8 gap-4">
+        {['Buy', 'Rent', 'Parts'].map((tab) => (
+          <button
+            key={tab}
+            onClick={() => setActiveTab(tab)}
+            className={`py-2 px-6 rounded-full text-lg font-bold transition ${
+              activeTab === tab
+                ? 'bg-sky-700 text-white shadow-md'
+                : 'bg-gray-300 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-400 dark:hover:bg-gray-600'
+            }`}
+          >
+            {tab}
+          </button>
+        ))}
+      </div>
 
-            <div id="sectionBody" className='flex flex-row justify-start gap-4 w-[100%] h-[270px] bg-gray-100 border-2 border-gray-200 rounded-xl shadow-lg p-4 hover:shadow-2xl transition-shadow duration-300'>
+      {/* Content */}
+      <div className="p-8">
+        {activeTab === 'Buy' && (
+          <>
+            <h2 className="text-3xl font-bold mb-4 text-center text-gray-900 dark:text-gray-100">Cars For Sale</h2>
+            {carInventoryData.length > 0 ? (
+              renderItems(carInventoryData.filter(car => car.rental === 0), 'Buy')
+            ) : (
+              <p className="text-center text-gray-900 dark:text-gray-100">Loading...</p>
+            )}
+          </>
+        )}
 
-              {carRepairServicesData && carRepairServicesData.length > 0 ? (
-                  carRepairServicesData.slice(0, 4).map((repairOption, index) => (
-                    <div key={index} className="h-[100%] w-1/4 flex flex-col justify-start border-2 border-gray-200 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
-                      <img src={repairOption.image_url} alt="repairOption" className="w-full h-[80%] rounded-t-lg object-cover"/>
-                      <div id="textArea" className="w-full h-[20%] flex flex-row justify-between bg-gray-100 rounded-b-lg">
-                        <p className="text-m my-auto font-bold text-gray-800">
-                          {repairOption.repair_option_title}
-                        </p>
-                        <button className="items-center my-auto">
-                          <img src={carCart} alt="Add to Cart" className="w-[25px] h-[25px]" />
-                        </button>
-                      </div>
-                    </div>
-                  ))
-                  ): (
-                    <p>Loading...</p>
-                )}
+        {activeTab === 'Rent' && (
+          <>
+            <h2 className="text-3xl font-bold mb-4 text-center text-gray-900 dark:text-gray-100">Cars For Rent</h2>
+            {carRentalData.length > 0 ? (
+              renderItems(carRentalData.filter(car => car.rental === 1), 'Rent')
+            ) : (
+              <p className="text-center text-gray-900 dark:text-gray-100">Loading...</p>
+            )}
+          </>
+        )}
 
-              {/* <button className="h-full bg-gradient-to-r from-gray-300 to-gray-200 text-gray-800 font-bold rounded-xl border-2 border-gray-200 shadow-lg hover:shadow-xl transition-shadow duration-300 px-4">More</button> */}
-              <button  className="h-full w-[50px] bg-gradient-to-b from-sky-700 to-sky-600 border-l-2 border-sky-200 rounded-tr-xl rounded-br-xl shadow-md hover:shadow-lg transition-shadow duration-300 flex items-center justify-center">
-                <Link to='/Repairs'><span className="rotate-90 text-white font-bold">More</span></Link>
-              </button>
-
-            </div>
-        </div>
-
+        {activeTab === 'Parts' && (
+          <>
+            <h2 className="text-3xl font-bold mb-4 text-center text-gray-900 dark:text-gray-100">Car Parts</h2>
+            {carPartsData.length > 0 ? (
+              renderItems(carPartsData, 'Parts')
+            ) : (
+              <p className="text-center text-gray-900 dark:text-gray-100">Loading...</p>
+            )}
+          </>
+        )}
       </div>
 
       <Footer />
     </div>
-  )
-}
+  );
+};
 
-export default Market
+export default Market;

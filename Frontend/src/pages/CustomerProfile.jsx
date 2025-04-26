@@ -34,9 +34,9 @@ const CustomerProfile = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch(`http://localhost:9000/api/users/user?user_id=${user_id}`);
+        const response = await fetch(`http://localhost:9000/api/users?user_id=${user_id}`);
         const data = await response.json();
-        setUserInfo({ name: data.name, email: data.email });
+        setUserInfo({ name: data.username, email: data.user_email });
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
@@ -66,6 +66,8 @@ const CustomerProfile = () => {
       fetchUserData();
       fetchAppointments();
       fetchOrders();
+      console.log("Username:", userInfo.name);
+      console.log("Email:", userInfo.email);
     }
   }, [user_id]);
 

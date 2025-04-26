@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ShoppingCart, Truck, Store, CreditCard, ArrowLeft, CheckCircle } from 'lucide-react';
+import Notification from '../components/Notification'; // Import the Notification component
 
 const CheckoutMenu = () => {
   const navigate = useNavigate();
@@ -18,6 +19,7 @@ const CheckoutMenu = () => {
   const [orderType, setOrderType] = useState("pickup");
   const [deliveryLocation, setDeliveryLocation] = useState("");
   const [paymentType, setPaymentType] = useState("cash");
+  const [orderStatus, setOrderStatus] = useState(0); // 0: no message, 1: success, 2: error
 
   const clearCart = () => {
     setCartItems([]);
@@ -62,18 +64,29 @@ const CheckoutMenu = () => {
       });
 
       if (response.ok) {
-        alert("Order placed successfully!");
+        setOrderStatus(1); // Set status for successful order
         clearCart();
-        navigate("/");
+        // No need to navigate here, the useEffect will handle it
       } else {
         const errorMsg = await response.text();
-        alert(`Failed to place order: ${errorMsg}`);
+        console.error(`Failed to place order: ${errorMsg}`);
+        setOrderStatus(2); // Set status for error
       }
     } catch (error) {
       console.error("Checkout error:", error);
-      alert("An error occurred. Please try again.");
+      setOrderStatus(2); // Set status for error
     }
   };
+
+  useEffect(() => {
+    if (orderStatus === 1) {
+      const timer = setTimeout(() => {
+        setOrderStatus(0); // Clear message
+        navigate("/"); // Navigate after the notification disappears
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [orderStatus, navigate]);
 
   return (
     <div className="min-h-screen bg-gray-950 text-white p-6 flex justify-center items-center">
@@ -83,7 +96,7 @@ const CheckoutMenu = () => {
           <h2 className="text-3xl font-bold">Checkout</h2>
         </div>
 
-        {cartItems.length === 0 ? (
+        {cartItems.length === 0 && orderStatus === 0 ? ( // added orderStatus check
           <div className="text-center text-gray-400">
             <ShoppingCart size={48} className="mx-auto mb-4" />
             <p className="text-xl mb-4">Your cart is empty.</p>
@@ -205,6 +218,8 @@ const CheckoutMenu = () => {
           </>
         )}
       </div>
+      {orderStatus === 1 && <Notification desc={9} />} {/* success notification */}
+      {orderStatus === 2 && <Notification desc={2} />} {/* error notification */}
     </div>
   );
 };

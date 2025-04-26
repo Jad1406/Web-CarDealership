@@ -6,3 +6,24 @@ body{
     flex-direction: column;
     justify-content: space-between;
   }
+  .animate-infinite-scroll {
+    animation: infiniteScroll 300s linear infinite; /* Adjust speed as needed */
+  }
+  
+  @keyframes infiniteScroll {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-100%); /* Adjust based on content width */
+    }
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .scrollbar-hide {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }

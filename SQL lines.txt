@@ -90,3 +90,15 @@ CREATE TABLE orders (
         FOREIGN KEY (user_id)
         REFERENCES users(user_id)
 );
+
+-- Adding an email column to employee table
+ALTER TABLE employee
+ADD COLUMN employee_email VARCHAR(255);
+
+
+UPDATE employee
+SET employee_email = CONCAT(employee_first_name, '.', employee_last_name, '@gmail.com');
+
+
+ALTER TABLE employee
+ADD CONSTRAINT unique_email UNIQUE (employee_email);
