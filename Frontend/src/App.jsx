@@ -9,12 +9,12 @@ import Parts from './pages/Parts';
 import CustomerProfile from './pages/CustomerProfile';
 import Market from './pages/Market';
 import RecoverAccount from './pages/RecoverAccount';
-import Repairs from './pages/Repairs';
-import UserList from './dbCalls/UserList';
 import RentalForm from './components/RentalForm';
 import AdminPannel from './pages/AdminPannel';
 import RequestedPart from './pages/RequestedPart';
 import Checkout from './pages/CheckoutMenu';
+import CarSimulation from './pages/CarSimulation';
+import ChatBot from './components/ChatBot';
 
 
 // const apiUrl = process.env.REACT_APP_API_URL;
@@ -34,12 +34,12 @@ function App(){
             <Route path="/Customer_Profile" element={<CustomerProfile />} />
             <Route path="/Market" element={<Market />} />
             <Route path="/Recover_Account" element={<RecoverAccount />} />
-            <Route path="/Repairs" element={<Repairs />} />
-            <Route path="/users" element={<UserList />} />
             <Route path="/Admin_Pannel" element={<AdminPannel />} />
             <Route path="/Rental_Form" element={<RentalForm />}></Route>
             <Route path="/Requested_Part" element={<RequestedPart />}></Route>
             <Route path="/Checkout" element={<Checkout />}></Route>
+            <Route path="/Simulation" element={<CarSimulation />}></Route>
+            <Route path="/ChatBot" element={<ChatBot />}></Route>
           </Routes>
         </BrowserRouter>
       </div>

@@ -5,6 +5,7 @@ import Footer from '../components/Footer';
 import '../css/market.css';
 import carCart from '../assets/MarketAssets/carCart.svg';
 import RentalForm from '../components/RentalForm';
+import ChatBot from '../components/ChatBot';
 
 const Market = () => {
   let user_id = localStorage.getItem("user_id");
@@ -257,6 +258,7 @@ const Market = () => {
         )}
       </div>
 
+      <ChatBot />
       <Footer />
     </div>
   );

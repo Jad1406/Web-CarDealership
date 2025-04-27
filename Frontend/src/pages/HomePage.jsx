@@ -6,6 +6,7 @@ import Footer from '../components/Footer'
 import carDealershipImage from '../assets/HomePageAssets/carDealershipSale.jpg'
 import carDealershipRepairImage from '../assets/HomePageAssets/carDealershipRepair.jpg'
 import carDealershipPartsImage from '../assets/HomePageAssets/carDealershipParts.jpg'
+import ChatBot from '../components/ChatBot'
 
 const HomePage = () => {
 
@@ -220,6 +221,7 @@ const HomePage = () => {
 
           </section>
         </div>
+        <ChatBot />
         <Footer />
       </div>
 

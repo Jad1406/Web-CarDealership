@@ -11,6 +11,7 @@ import interiorImg from "../assets/MarketAssets/InteriorRemake.jpg";
 import electricalImg from "../assets/MarketAssets/Electrical.jpeg";
 import exhaustImg from "../assets/MarketAssets/Exhaust.jpeg";
 import miscImg from "../assets/MarketAssets/MiscParts.jpeg";
+import ChatBot from "../components/ChatBot";
 
 const Parts = () => {
   const [carParts, setCarParts] = useState([]);
@@ -59,6 +60,7 @@ const Parts = () => {
           ))}
         </div>
       </div>
+      <ChatBot />
     </div>
   );
 };

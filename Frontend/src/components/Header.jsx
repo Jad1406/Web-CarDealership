@@ -68,7 +68,6 @@ const Header = ({ title }) => {
           <Link className="hover:text-sky-400 transition" to="/Market">Market</Link>
           <Link className="hover:text-sky-400 transition" to="/Cars_For_Sale_Or_Rent">Gallery</Link>
           <Link className="hover:text-sky-400 transition" to="/Parts">Parts</Link>
-          <Link className="hover:text-sky-400 transition" to="/Repairs">Repairs</Link>
         </nav>
 
         <div className="flex items-center gap-4">

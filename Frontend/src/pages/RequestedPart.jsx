@@ -6,7 +6,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { useLocation, useNavigate } from 'react-router-dom';
 import RequestedPartCard from '../components/RequestedPartCard';
-// import { ArrowBack } from 'lucide-react';
+import ChatBot from '../components/ChatBot';
 
 const RequestedPart = () => {
   const [cartItemsCounter, setCartItemsCounter] = useState(() => {
@@ -172,6 +172,7 @@ const RequestedPart = () => {
           </button> */}
         </main>
       </div>
+    <ChatBot />
     </div>
   );
 };

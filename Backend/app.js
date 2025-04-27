@@ -9,6 +9,7 @@ import employees from './routes/employees.js'
 import appointments from './routes/appointments.js'
 import carParts from './routes/carPartsRoute.js'
 import orders from './routes/orderRoute.js'
+import chatBot from './routes/chatBotRoute.js'
 
 // Load environment variables
 dotenv.config();
@@ -38,5 +39,6 @@ app.use('/api/employees', employees);
 app.use('/api/appointments', appointments);
 app.use('/api/carParts', carParts);
 app.use('/api/orders', orders);
+app.use('/api', chatBot);
 
 export default app;

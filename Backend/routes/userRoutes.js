@@ -126,15 +126,32 @@ router.get('/:user_id', (req, res) => {
 // Update a user
 router.put('/:user_id', (req, res) => {
   const { user_id } = req.params;
-  const { first_name, last_name, username, user_email, user_password, user_phone } = req.body;
-  pool.query(
-    'UPDATE USERS SET first_name = ?, last_name = ?, username = ?, user_email = ?, user_password = ?, user_phone = ? WHERE user_id = ?',
-    [first_name, last_name, username, user_email, user_password, user_phone, user_id],
-    (err) => {
-      if (err) return res.status(500).json({ error: err.message });
-      res.json({ message: 'User updated' });
+  const updates = req.body; // Get all updates from the body
+  const values = [];
+  let query = 'UPDATE USERS SET ';
+  const allowedFields = ['username', 'user_email']; //list of allowed fields to update
+
+  let i = 0;
+  for (const key in updates) {
+    console.log("i is: ", i);
+    
+    if (allowedFields.includes(key) && updates[key] !== undefined) { //make sure only allowed fields are updated and value is not undefined
+      query += `${key} = ?, `;
+      values.push(updates[key]);
+      i++;
     }
-  );
+  }
+  if(i === 0){
+    return res.status(400).json({message: "No valid fields to update"});
+  }
+  query = query.slice(0, -2); // Remove the trailing ', '
+  query += ' WHERE user_id = ?';
+  values.push(user_id);
+
+  pool.query(query, values, (err) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json({ message: 'User updated' });
+  });
 });
 
 // Delete a user

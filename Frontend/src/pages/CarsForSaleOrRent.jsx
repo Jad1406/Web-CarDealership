@@ -5,6 +5,7 @@ import RentalForm from '../components/RentalForm';
 import BookmarkIcon from '@mui/icons-material/BookmarkBorder';
 import Notification from '../components/Notification';
 import '../css/carGallery.css';
+import ChatBot from '../components/ChatBot';
 
 const CarsForSaleOrRent = () => {
   let user_id = localStorage.getItem('user_id');
@@ -264,6 +265,8 @@ const CarsForSaleOrRent = () => {
         </div>
 
       </div>
+
+      <ChatBot />
     </div>
   );
 };
