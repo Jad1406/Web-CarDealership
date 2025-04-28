@@ -45,12 +45,5 @@ router.get('/parts', async (req,res) =>{
     });
 });
 
-router.get('/repairs', async (req,res) =>{
-    const selectQuery = 'SELECT * FROM REPAIROPTIONS ORDER BY requests_completed DESC';
-    pool.query(selectQuery, (err,results)=>{
-        if (err) return res.status(500).json({ error: err.message });
-        res.json(results);
-    });
-});
 
 export default router;
